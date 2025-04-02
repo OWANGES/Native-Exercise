@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { View, Text, Button, StyleSheet } from "react-native";
 
 function Rep({ highestRep, setHighestRep }) {
   const [count, setCount] = useState(0);
@@ -16,13 +17,34 @@ function Rep({ highestRep, setHighestRep }) {
   };
 
   return (
-    <div className="appPage1">
-      <h1>Rep Tracking</h1>
-      <p>Click the button to track reps!</p>
-      <h2>Rep Count: {count}</h2>
-      <button onClick={handleIncrement}>Count Up!</button>
-    </div>
+    <View style={styles.container}>
+      <Text style={styles.header}>Rep Tracking</Text>
+      <Text style={styles.instruction}>Click the button to track reps!</Text>
+      <Text style={styles.count}>Rep Count: {count}</Text>
+      <Button title="Count Up!" onPress={handleIncrement} />
+    </View>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 20,
+  },
+  header: {
+    fontSize: 24,
+    fontWeight: 'bold',
+  },
+  instruction: {
+    fontSize: 18,
+    marginVertical: 10,
+  },
+  count: {
+    fontSize: 20,
+    marginVertical: 10,
+  },
+});
 
 export default Rep;

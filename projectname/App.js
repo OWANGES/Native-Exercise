@@ -1,20 +1,20 @@
-import './App.css';
 import React, { useState } from 'react';
-import Duration from "./components/DurationFolder";
-import Rep from "./components/RepFolder";
-import Highscore from "./components/HighScore"; 
-//import { StyleSheet, SafeAreaView, FlatList, Text, View, TextInput, Button, CheckBox, Platform } from 'react-native'; // Ensure Platform is imported here
+import { View, Text, Button, StyleSheet } from 'react-native';
+import Duration from './components/DurationFolder/index.js';
+import Rep from "./components/RepFolder/index.js";
+import Highscore from "./components/HighScore/index.js";
+
 
 function App() {
   const [showPageDuration, setShowPageDuration] = useState(false);
   const [showPageRep, setShowPageRep] = useState(false);
-  const [exercise, setExercise] = useState(''); 
-  const [isPromptVisible, setIsPromptVisible] = useState(false); 
-  const [highestRep, setHighestRep] = useState(0); 
+  const [exercise, setExercise] = useState('');
+  const [isPromptVisible, setIsPromptVisible] = useState(false);
+  const [highestRep, setHighestRep] = useState(0);
 
   const handleExerciseSelection = (exerciseType) => {
     setExercise(exerciseType);
-    setIsPromptVisible(true); 
+    setIsPromptVisible(true);
   };
 
   const handleRepDurationSelection = (selection) => {
@@ -25,38 +25,55 @@ function App() {
       setShowPageRep(true);
       setShowPageDuration(false);
     }
-    setIsPromptVisible(false); 
+    setIsPromptVisible(false);
   };
 
   return (
-    <div className="App">
-      <header className="App-header">
-        <div className="container">
-          <h1>Pick an Exercise</h1>
-        </div>
-        
-        <div className="grid-container">
-          <button onClick={() => handleExerciseSelection('Push-up')}>Push-up</button>
-          <button onClick={() => handleExerciseSelection('Plank')}>Plank</button>
-          <button onClick={() => handleExerciseSelection('Walking')}>Walking</button>
-          <button onClick={() => handleExerciseSelection('Running')}>Running</button>
-        </div>
+    <View style={styles.container}>
+      <Text style={styles.header}>Pick an Exercise</Text>
+      
+      <View style={styles.gridContainer}>
+        <Button title="Push-up" onPress={() => handleExerciseSelection('Push-up')} />
+        <Button title="Plank" onPress={() => handleExerciseSelection('Plank')} />
+        <Button title="Walking" onPress={() => handleExerciseSelection('Walking')} />
+        <Button title="Running" onPress={() => handleExerciseSelection('Running')} />
+      </View>
 
-        {isPromptVisible && (
-          <div className="prompt">
-            <p>Would you like to track by Duration or Rep for {exercise}?</p>
-            <button onClick={() => handleRepDurationSelection("Duration")}>Duration</button>
-            <button onClick={() => handleRepDurationSelection("Rep")}>Rep</button>
-          </div>
-        )}
+      {isPromptVisible && (
+        <View style={styles.prompt}>
+          <Text>Would you like to track by Duration or Rep for {exercise}?</Text>
+          <Button title="Duration" onPress={() => handleRepDurationSelection("Duration")} />
+          <Button title="Rep" onPress={() => handleRepDurationSelection("Rep")} />
+        </View>
+      )}
 
-        {showPageDuration && <Duration />} 
-        {showPageRep && <Rep setHighestRep={setHighestRep} highestRep={highestRep} />} 
-
-        {showPageRep && <Highscore highestRep={highestRep} />}
-      </header>
-    </div>
+      {showPageDuration && <Duration />}
+      {showPageRep && <Rep setHighestRep={setHighestRep} highestRep={highestRep} />}
+      {showPageRep && <Highscore highestRep={highestRep} />}
+    </View>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 20,
+  },
+  header: {
+    fontSize: 24,
+    fontWeight: 'bold',
+  },
+  gridContainer: {
+    marginVertical: 20,
+    width: '100%',
+    justifyContent: 'space-between',
+  },
+  prompt: {
+    marginTop: 20,
+    alignItems: 'center',
+  },
+});
 
 export default App;

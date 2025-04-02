@@ -1,10 +1,12 @@
 import React, { useState, useEffect, useRef } from "react";
+import { View, Text, Button, StyleSheet } from "react-native";
 
 const Duration = () => {
   const [seconds, setSeconds] = useState(0);
   const [isRunning, setIsRunning] = useState(false);
   const intervalIdRef = useRef(null);
 
+  // Start/stop timer on state change of `isRunning`
   useEffect(() => {
     if (isRunning) {
       console.log("Starting timer...");
@@ -16,16 +18,18 @@ const Duration = () => {
       clearInterval(intervalIdRef.current);
     }
 
+    // Cleanup the interval on unmount or when `isRunning` is false
     return () => {
-      console.log("Cleaning up interval...");
       clearInterval(intervalIdRef.current);
     };
   }, [isRunning]);
 
+  // Start/stop the timer
   const handleStartStop = () => {
     setIsRunning((prev) => !prev);
   };
 
+  // Reset the timer
   const handleReset = () => {
     setIsRunning(false);
     setSeconds(0);
@@ -36,16 +40,27 @@ const Duration = () => {
   const remainingSeconds = seconds % 60;
 
   return (
-    <div>
-      <h1>
+    <View style={styles.container}>
+      <Text style={styles.timer}>
         {hours}h : {minutes}m : {remainingSeconds}s
-      </h1>
-      <button onClick={handleStartStop}>
-        {isRunning ? "Stop" : "Start"}
-      </button>
-      <button onClick={handleReset}>Reset</button>
-    </div>
+      </Text>
+      <Button title={isRunning ? "Stop" : "Start"} onPress={handleStartStop} />
+      <Button title="Reset" onPress={handleReset} />
+    </View>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    padding: 20,
+  },
+  timer: {
+    fontSize: 36,
+    marginBottom: 20,
+  },
+});
 
 export default Duration;
