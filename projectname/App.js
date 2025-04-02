@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import Duration from "./components/DurationFolder";
 import Rep from "./components/RepFolder";
 import Highscore from "./components/HighScore"; 
+//import { StyleSheet, SafeAreaView, FlatList, Text, View, TextInput, Button, CheckBox, Platform } from 'react-native'; // Ensure Platform is imported here
 
 function App() {
   const [showPageDuration, setShowPageDuration] = useState(false);
