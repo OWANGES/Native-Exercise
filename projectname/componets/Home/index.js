@@ -2,7 +2,7 @@ import React from 'react';
 import { FlatList, View, Button, Text, StyleSheet } from 'react-native';
 
 const Home = ({ navigation }) => {
-  // Data for exercises
+
   const exercises = [
     { id: '1', name: 'Push-up', type: 'Repetition' },
     { id: '2', name: 'Plank', type: 'Duration' },
@@ -10,7 +10,6 @@ const Home = ({ navigation }) => {
     { id: '4', name: 'Running', type: 'Duration' },
   ];
 
-  // Render each item in the FlatList
   const renderItem = ({ item }) => (
     <View style={styles.buttonContainer}>
       <Button

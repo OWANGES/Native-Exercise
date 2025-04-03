@@ -19,11 +19,9 @@ const RepetitionExercise = ({ route, navigation }) => {
       <Text style={styles.count}>{count} reps</Text>
       <Button title="Increase" onPress={increaseCount} />
       <Button title="Reset" onPress={resetCount} />
-      <Button
-        title="Suggested Exercise"
-        onPress={() => navigation.navigate('DurationExercise', { exerciseName: 'Plank' })}
-      />
-      <Button title="Home" onPress={() => navigation.navigate('HomeScreen')} />
+      
+      {/* Home button */}
+      <Button title="Home" onPress={() => navigation.navigate('Home')} />
     </View>
   );
 };

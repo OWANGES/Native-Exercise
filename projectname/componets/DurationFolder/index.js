@@ -3,37 +3,42 @@ import { View, Text, Button, StyleSheet } from 'react-native';
 
 const DurationExercise = ({ route, navigation }) => {
   const { exerciseName } = route.params;
-  const [seconds, setSeconds] = useState(0);
+  const [timer, setTimer] = useState(0);
   const [isRunning, setIsRunning] = useState(false);
+  const [intervalId, setIntervalId] = useState(null);
 
-  const startStopTimer = () => {
-    setIsRunning(!isRunning);
+  const startTimer = () => {
     if (!isRunning) {
-      setInterval(() => {
-        setSeconds((prev) => prev + 1);
-      }, 1000);
+      const id = setInterval(() => {
+        setTimer(prevTime => prevTime + 10);
+      }, 10);
+      setIsRunning(true);
+      setIntervalId(id);
     }
   };
 
   const resetTimer = () => {
-    setSeconds(0);
+    setTimer(0);
+    if (intervalId) {
+      clearInterval(intervalId);
+      setIsRunning(false);
+    }
+  };
+
+  const formatTime = (time) => {
+    const minutes = Math.floor(time / 60000);
+    const seconds = Math.floor((time % 60000) / 1000);
+    const milliseconds = time % 1000;
+    return `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}:${String(milliseconds).padStart(3, '0')}`;
   };
 
   return (
     <View style={styles.container}>
       <Text style={styles.header}>{exerciseName}</Text>
-      <Text style={styles.timer}>
-        {String(Math.floor(seconds / 3600)).padStart(2, '0')}:
-        {String(Math.floor((seconds % 3600) / 60)).padStart(2, '0')}:
-        {String(seconds % 60).padStart(2, '0')}
-      </Text>
-      <Button title={isRunning ? 'Stop' : 'Start'} onPress={startStopTimer} />
-      <Button title="Reset" onPress={resetTimer} />
-      <Button
-        title="Suggested Exercise"
-        onPress={() => navigation.navigate('RepetitionExercise', { exerciseName: 'Push-up' })}
-      />
-      <Button title="Home" onPress={() => navigation.navigate('HomeScreen')} />
+      <Text style={styles.count}>{formatTime(timer)}</Text>
+      <Button title="Start Timer" onPress={startTimer} disabled={isRunning} />
+      <Button title="Reset Timer" onPress={resetTimer} />
+      <Button title="Home" onPress={() => navigation.navigate('Home')} />
     </View>
   );
 };
@@ -49,7 +54,7 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: 'bold',
   },
-  timer: {
+  count: {
     fontSize: 36,
     marginVertical: 20,
   },
