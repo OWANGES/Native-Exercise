@@ -1,51 +1,39 @@
-import React, { useState, useEffect, useRef } from "react";
-import { View, Text, Button, StyleSheet } from "react-native";
+import React, { useState } from 'react';
+import { View, Text, Button, StyleSheet } from 'react-native';
 
-const Duration = () => {
+const DurationExercise = ({ route, navigation }) => {
+  const { exerciseName } = route.params;
   const [seconds, setSeconds] = useState(0);
   const [isRunning, setIsRunning] = useState(false);
-  const intervalIdRef = useRef(null);
 
-  // Start/stop timer on state change of `isRunning`
-  useEffect(() => {
-    if (isRunning) {
-      console.log("Starting timer...");
-      intervalIdRef.current = setInterval(() => {
-        setSeconds((prevSeconds) => prevSeconds + 1);
+  const startStopTimer = () => {
+    setIsRunning(!isRunning);
+    if (!isRunning) {
+      setInterval(() => {
+        setSeconds((prev) => prev + 1);
       }, 1000);
-    } else {
-      console.log("Stopping timer...");
-      clearInterval(intervalIdRef.current);
     }
-
-    // Cleanup the interval on unmount or when `isRunning` is false
-    return () => {
-      clearInterval(intervalIdRef.current);
-    };
-  }, [isRunning]);
-
-  // Start/stop the timer
-  const handleStartStop = () => {
-    setIsRunning((prev) => !prev);
   };
 
-  // Reset the timer
-  const handleReset = () => {
-    setIsRunning(false);
+  const resetTimer = () => {
     setSeconds(0);
   };
 
-  const hours = Math.floor(seconds / 3600);
-  const minutes = Math.floor((seconds % 3600) / 60);
-  const remainingSeconds = seconds % 60;
-
   return (
     <View style={styles.container}>
+      <Text style={styles.header}>{exerciseName}</Text>
       <Text style={styles.timer}>
-        {hours}h : {minutes}m : {remainingSeconds}s
+        {String(Math.floor(seconds / 3600)).padStart(2, '0')}:
+        {String(Math.floor((seconds % 3600) / 60)).padStart(2, '0')}:
+        {String(seconds % 60).padStart(2, '0')}
       </Text>
-      <Button title={isRunning ? "Stop" : "Start"} onPress={handleStartStop} />
-      <Button title="Reset" onPress={handleReset} />
+      <Button title={isRunning ? 'Stop' : 'Start'} onPress={startStopTimer} />
+      <Button title="Reset" onPress={resetTimer} />
+      <Button
+        title="Suggested Exercise"
+        onPress={() => navigation.navigate('RepetitionExercise', { exerciseName: 'Push-up' })}
+      />
+      <Button title="Home" onPress={() => navigation.navigate('HomeScreen')} />
     </View>
   );
 };
@@ -53,14 +41,18 @@ const Duration = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
+    justifyContent: 'center',
+    alignItems: 'center',
     padding: 20,
+  },
+  header: {
+    fontSize: 24,
+    fontWeight: 'bold',
   },
   timer: {
     fontSize: 36,
-    marginBottom: 20,
+    marginVertical: 20,
   },
 });
 
-export default Duration;
+export default DurationExercise;

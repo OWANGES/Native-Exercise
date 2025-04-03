@@ -1,30 +1,32 @@
-import React, { useState } from "react";
-import { View, Text, Button, StyleSheet } from "react-native";
+import React, { useState } from 'react';
+import { View, Text, Button, StyleSheet } from 'react-native';
 
-function Rep({ highestRep, setHighestRep }) {
+const RepetitionExercise = ({ route, navigation }) => {
+  const { exerciseName } = route.params;
   const [count, setCount] = useState(0);
 
-  const handleIncrement = () => {
-    setCount(prevCount => {
-      const newCount = prevCount + 1;
+  const increaseCount = () => {
+    setCount(count + 1);
+  };
 
-      if (newCount > highestRep) {
-        setHighestRep(newCount);
-      }
-
-      return newCount;
-    });
+  const resetCount = () => {
+    setCount(0);
   };
 
   return (
     <View style={styles.container}>
-      <Text style={styles.header}>Rep Tracking</Text>
-      <Text style={styles.instruction}>Click the button to track reps!</Text>
-      <Text style={styles.count}>Rep Count: {count}</Text>
-      <Button title="Count Up!" onPress={handleIncrement} />
+      <Text style={styles.header}>{exerciseName}</Text>
+      <Text style={styles.count}>{count} reps</Text>
+      <Button title="Increase" onPress={increaseCount} />
+      <Button title="Reset" onPress={resetCount} />
+      <Button
+        title="Suggested Exercise"
+        onPress={() => navigation.navigate('DurationExercise', { exerciseName: 'Plank' })}
+      />
+      <Button title="Home" onPress={() => navigation.navigate('HomeScreen')} />
     </View>
   );
-}
+};
 
 const styles = StyleSheet.create({
   container: {
@@ -37,14 +39,10 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: 'bold',
   },
-  instruction: {
-    fontSize: 18,
-    marginVertical: 10,
-  },
   count: {
-    fontSize: 20,
-    marginVertical: 10,
+    fontSize: 36,
+    marginVertical: 20,
   },
 });
 
-export default Rep;
+export default RepetitionExercise;
